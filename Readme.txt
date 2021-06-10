@@ -12,6 +12,8 @@ npm i --save-dev nodemon
 npm i mongoose
 npm i helmet
 npm i morgan
+npm i swagger-jsdoc
+npm i swagger-ui-express
 
 Deploy on Heroku
 heroku login
