@@ -43,7 +43,7 @@ app.use("/post", postRoutes);
 //MongoDB Connection
 mongoose.connect(
   MONGODB,
-  { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true },
+  { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true , useFindAndModify: true,},
   () => {
     console.log(`MongoDB connected`);
   }

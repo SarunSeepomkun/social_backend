@@ -2,14 +2,14 @@ const express = require("express");
 const router = express.Router();
 
 const { signin, signup , GetProfile , UpdateProfile , DeleteUser , followuser } = require("../controller/userController");
-
+const { CheckJWTToken } = require("../controller/authController");
 //Route
 router.post("/signin", signin);
 router.post("/signup", signup);
 router.get("/getprofile/:userID", GetProfile);
-router.put("/editprofile", UpdateProfile);
-router.delete("/deleteuser", DeleteUser);
-router.put("/followuser", followuser);
+router.put("/editprofile", CheckJWTToken , UpdateProfile);
+router.delete("/deleteuser", CheckJWTToken , DeleteUser);
+router.put("/followuser",CheckJWTToken , followuser);
 
 //API Document
 /**

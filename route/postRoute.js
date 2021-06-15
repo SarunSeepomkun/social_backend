@@ -7,15 +7,16 @@ const {
   likePost,
   deletePost,
 } = require("../controller/postController");
+const { CheckJWTToken } = require("../controller/authController");
 
 const router = express.Router();
 
 router.get("/getposts", getPosts);
-router.post("/createpost", createPost);
-router.put("/likepost", likePost);
+router.post("/createpost",CheckJWTToken, createPost);
+router.put("/likepost",CheckJWTToken ,likePost);
 router.get("/getpostbyuserid", getPostByUserID);
-router.put("/editpost", updatePost);
-router.delete("/deletepost", deletePost);
+router.put("/editpost",CheckJWTToken ,updatePost);
+router.delete("/deletepost",CheckJWTToken, deletePost);
 
 
 /**

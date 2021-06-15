@@ -1,7 +1,3 @@
-Refers
-https://www.youtube.com/watch?v=ldGl6L4Vktk
-https://github.com/safak/youtube/tree/social-rest-api
-
 NodeJSPackages
 npm init -y
 npm i express
