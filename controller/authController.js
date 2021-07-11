@@ -4,12 +4,12 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 exports.CheckJWTToken = async (req, res, next) => {
-  let token;
-  if (req.headers.JWTToken) {
-    token = req.headers.JWTToken;
+  let token = null;
+  if (req.headers.jwttoken) {
+    token = req.headers.jwttoken;
   }
 
-  if (!token) {
+  if (token === null) {
     return res.status(401).json({ message: "Unauthorized to access" });
   }
 
