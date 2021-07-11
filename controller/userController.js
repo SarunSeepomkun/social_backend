@@ -28,7 +28,7 @@ exports.signin = async (req, res) => {
       { expiresIn: "1h" }
     );
 
-    res.status(200).json({ username: existUser.username, token });
+    res.status(200).json({userID:existUser._id , username: existUser.username, token });
   } catch (error) {
     res.status(500).json({ message: `Error userController.signin : ${error}` });
   }
