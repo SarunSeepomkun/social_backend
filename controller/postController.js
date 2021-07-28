@@ -5,7 +5,18 @@ const PostMessage = require("../model/postModel");
 //Get All Posts
 exports.getPosts = async (req, res) => {
   try {
-    const postMessages = await PostMessage.find();
+    //const postMessages = await PostMessage.find();
+
+    const postMessages = await PostMessage.aggregate([
+      { "$lookup": {
+        "let": { "userObjId": { "$toObjectId": "$userID" } },
+        "from": "users",
+        "pipeline": [
+          { "$match": { "$expr": { "$eq": [ "$_id", "$$userObjId" ] } } }
+        ],
+        "as": "user_info"
+      }}
+    ]);
 
     res.status(200).json(postMessages);
   } catch (error) {
