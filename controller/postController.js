@@ -16,7 +16,7 @@ exports.getPosts = async (req, res) => {
         ],
         "as": "user_info"
       }}
-    ]);
+    ]).sort({ createdDate:-1 });
 
     res.status(200).json(postMessages);
   } catch (error) {
@@ -29,7 +29,7 @@ exports.getPostByUserID = async (req, res) => {
   try {
     const { userID } = req.body;
 
-    const posts = await PostMessage.findOne({userID});
+    const posts = await PostMessage.findOne({userID}).sort({ createdDate:-1 });
     res.status(200).json(posts);
   } catch (error) {
     res.status(404).json({ message: error.message });
