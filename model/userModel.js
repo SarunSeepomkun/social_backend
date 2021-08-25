@@ -35,6 +35,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     max: 100,
   },
+  gender:{
+    type: String,
+    max: 30
+  },
   createdDate: {
     type: Date,
     default: new Date(),
