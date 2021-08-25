@@ -16,7 +16,7 @@ router.post("/createpost",CheckJWTToken, createPost);
 router.put("/likepost",CheckJWTToken ,likePost);
 router.get("/getpostbyuserid", getPostByUserID);
 router.put("/editpost",CheckJWTToken ,updatePost);
-router.delete("/deletepost",CheckJWTToken, deletePost);
+router.post("/deletepost",CheckJWTToken, deletePost);
 
 
 /**
@@ -140,7 +140,7 @@ router.delete("/deletepost",CheckJWTToken, deletePost);
 /**
  * @swagger
  * /post/deletepost:
- *  delete:
+ *  post:
  *      tags: [Post]
  *      parameters:
  *              - in: body
