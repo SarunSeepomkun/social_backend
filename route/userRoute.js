@@ -76,6 +76,8 @@ router.post("/Upload_Avatar",Upload_Avatar);
  *                          type: string
  *                      country:
  *                          type: string
+ *                      gender:
+ *                          type: string
  *      responses:
  *          200:
  *              description: Sign-up
@@ -118,6 +120,8 @@ router.post("/Upload_Avatar",Upload_Avatar);
  *                      bio:
  *                          type: string
  *                      country:
+ *                          type: string
+ *                      gender:
  *                          type: string
  *      responses:
  *          200:
