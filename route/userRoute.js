@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { signin, signup , GetProfile , UpdateProfile , DeleteUser , followuser } = require("../controller/userController");
+const { signin, signup , GetProfile , UpdateProfile , DeleteUser , followuser ,Upload_Avatar } = require("../controller/userController");
 const { CheckJWTToken } = require("../controller/authController");
 //Route
 router.post("/signin", signin);
@@ -10,7 +10,7 @@ router.get("/getprofile/:userID", GetProfile);
 router.put("/editprofile", CheckJWTToken , UpdateProfile);
 router.delete("/deleteuser", CheckJWTToken , DeleteUser);
 router.put("/followuser",CheckJWTToken , followuser);
-
+router.post("/Upload_Avatar",Upload_Avatar);
 //API Document
 /**
  * @swagger

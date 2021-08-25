@@ -28,7 +28,18 @@ exports.signin = async (req, res) => {
       { expiresIn: "1h" }
     );
 
-    res.status(200).json({userID:existUser._id , username: existUser.username, token });
+    const result = {
+      userID: existUser._id,
+      username: existUser.username,
+      token,
+    };
+
+    res.cookie("social-token", JSON.stringify(result), {
+      httpOnly: true,
+      maxAge: 1 * 60 * 60 * 1000, //1Hour
+    });
+
+    res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ message: `Error userController.signin : ${error}` });
   }
@@ -94,13 +105,13 @@ exports.GetProfile = async (req, res) => {
 //Update Profile By ID
 exports.UpdateProfile = async (req, res) => {
   try {
-    const { userID, bio, country } = req.body;
+    const { userID, bio, country , gender } = req.body;
     const user = await UserModel.findById(userID);
 
     if (user === null) {
       res.status(200).json({ message: "This profile does not exist." });
     } else {
-      await UserModel.findByIdAndUpdate(userID, { bio, country });
+      await UserModel.findByIdAndUpdate(userID, { bio, country , gender });
       res.status(200).json({ message: "Updated" });
     }
   } catch (error) {
@@ -162,3 +173,25 @@ exports.followuser = async (req, res) => {
       .json({ message: `Error : userController.followuser ${error}` });
   }
 };
+
+exports.Upload_Avatar = async (req , res)=>{
+  try {
+  
+    if(!req.files || Object.keys(req.files).length === 0){
+      return res.status(400).send("No files were uploaded.");
+    }
+
+    const file = req.files[0]; //req.files.filname
+    const upload_path = __dirname + '/somewhere/on/your/server/' + file.name;
+
+    file.mv(upload_path, error => {
+      if(error){
+        return res.status(500).send({ message : `Error : ${error}` })
+      }
+      res.json({ message : "File Uploaded"});
+    });
+
+  } catch (error) {
+    res.status(500).json({message: `Error : userController.jsupload_avatar ${error}`})
+  }
+}

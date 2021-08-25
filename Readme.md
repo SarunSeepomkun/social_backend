@@ -10,6 +10,7 @@ npm i helmet
 npm i morgan
 npm i swagger-jsdoc
 npm i swagger-ui-express
+npm i apollo-server graphql
 
 Deploy on Heroku
 heroku login

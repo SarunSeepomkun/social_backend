@@ -10,6 +10,7 @@ const morgan = require("morgan");
 const app = express();
 const swaggerJSDoc = require("swagger-jsdoc");
 const swaggerUI = require("swagger-ui-express");
+const fileUpload = require("express-fileupload");
 
 //Config
 dotenv.config();
@@ -36,6 +37,7 @@ app.use(express.json());
 app.use(helmet());
 app.use(morgan("common"));
 app.use(cors());
+app.use(fileUpload());
 
 app.use("/user", userRoute);
 app.use("/post", postRoutes);

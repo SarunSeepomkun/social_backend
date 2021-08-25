@@ -8,15 +8,15 @@ exports.getPosts = async (req, res) => {
     //const postMessages = await PostMessage.find();
 
     const postMessages = await PostMessage.aggregate([
-      { "$lookup": {
-        "let": { "userObjId": { "$toObjectId": "$userID" } },
-        "from": "users",
-        "pipeline": [
-          { "$match": { "$expr": { "$eq": [ "$_id", "$$userObjId" ] } } }
-        ],
-        "as": "user_info"
-      }}
-    ]).sort({ createdDate:-1 });
+      {
+        $lookup: {
+          let: { userObjId: { $toObjectId: "$userID" } },
+          from: "users",
+          pipeline: [{ $match: { $expr: { $eq: ["$_id", "$$userObjId"] } } }],
+          as: "user_info",
+        },
+      },
+    ]).sort({ createdDate: -1 });
 
     res.status(200).json(postMessages);
   } catch (error) {
@@ -29,7 +29,9 @@ exports.getPostByUserID = async (req, res) => {
   try {
     const { userID } = req.body;
 
-    const posts = await PostMessage.findOne({userID}).sort({ createdDate:-1 });
+    const posts = await PostMessage.findOne({ userID }).sort({
+      createdDate: -1,
+    });
     res.status(200).json(posts);
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -46,7 +48,7 @@ exports.createPost = async (req, res) => {
     });
 
     await newPostMessage.save();
-    res.status(201).json({message : "Created"});
+    res.status(201).json({ message: "Created" });
   } catch (error) {
     res.status(409).json({ message: error.message });
   }
@@ -60,9 +62,9 @@ exports.updatePost = async (req, res) => {
 
     if (post.userID === userID) {
       await post.updateOne({ $set: { message } });
-      res.status(200).json({message : "Updated"});
+      res.status(200).json({ message: "Updated" });
     } else {
-      res.status(403).json({message : "Unauthorize to edit this post"});
+      res.status(403).json({ message: "Unauthorize to edit this post" });
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -76,15 +78,15 @@ exports.deletePost = async (req, res) => {
 
     const post = await PostMessage.findById(postID);
 
-    if(!post){
-      res.status(200).json({message : "This post does not exist"});
+    if (!post) {
+      res.status(200).json({ message: "This post does not exist" });
     }
 
     if (post.userID === userID) {
       await post.deleteOne();
-      res.status(200).json({message : "Deleted"});
+      res.status(200).json({ message: "Deleted" });
     } else {
-      res.status(403).json({message : "Unauthorize to delete"});
+      res.status(403).json({ message: "Unauthorize to delete" });
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
