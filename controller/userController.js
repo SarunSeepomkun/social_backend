@@ -156,7 +156,7 @@ exports.followuser = async (req, res) => {
       await UserModel.findByIdAndUpdate(followuserID, {
         $pull: { followers: userID },
       });
-      res.status(200).json({ message: "Followed" });
+      res.status(200).json({ message: "unfollowed" });
     } else {
       //following
       await UserModel.findByIdAndUpdate(userID, {
@@ -165,7 +165,7 @@ exports.followuser = async (req, res) => {
       await UserModel.findByIdAndUpdate(followuserID, {
         $push: { followers: userID },
       });
-      res.status(200).json({ message: "Unfollowed" });
+      res.status(200).json({ message: "followed" });
     }
   } catch (error) {
     res
