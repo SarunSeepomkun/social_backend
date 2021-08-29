@@ -6,7 +6,7 @@ const PostMessage = require("../model/postModel");
 exports.getPosts = async (req, res) => {
   try {
     //const postMessages = await PostMessage.find();
- 
+
     const postMessages = await PostMessage.aggregate([
       {
         $lookup: {
@@ -29,16 +29,25 @@ exports.getPostByUserID = async (req, res) => {
   try {
     const { userID } = req.params;
 
-    const posts = await PostMessage.find({userID}).sort({
-      createdDate: -1,
-    });
+    const posts = await PostMessage.aggregate([
+      {
+        $lookup: {
+          let: { userObjId: { $toObjectId: "$userID" } },
+          from: "users",
+          pipeline: [{ $match: { $expr: { $eq: ["$_id", "$$userObjId"] } } }],
+          as: "user_info",
+        },
+      },
+    ]).sort({ createdDate: -1 });
 
     if (posts === null) {
-      res.status(200).json({count_posts:"0" , message: "This userID does not have any post." });
+      res.status(200).json({
+        count_posts: "0",
+        message: "This userID does not have any post.",
+      });
     } else {
       res.status(200).json(posts);
     }
-
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
