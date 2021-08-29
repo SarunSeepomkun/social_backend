@@ -6,7 +6,7 @@ const PostMessage = require("../model/postModel");
 exports.getPosts = async (req, res) => {
   try {
     //const postMessages = await PostMessage.find();
-
+ 
     const postMessages = await PostMessage.aggregate([
       {
         $lookup: {
@@ -27,7 +27,7 @@ exports.getPosts = async (req, res) => {
 //Get Post By UserID
 exports.getPostByUserID = async (req, res) => {
   try {
-    const { userID } = req.body;
+    const { userID } = req.params;
 
     const posts = await PostMessage.findOne({ userID }).sort({
       createdDate: -1,

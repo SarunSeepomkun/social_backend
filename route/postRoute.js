@@ -14,7 +14,7 @@ const router = express.Router();
 router.get("/getposts", getPosts);
 router.post("/createpost",CheckJWTToken, createPost);
 router.put("/likepost",CheckJWTToken ,likePost);
-router.get("/getpostbyuserid", getPostByUserID);
+router.get("/getpostbyuserid/:userID", getPostByUserID);
 router.put("/editpost",CheckJWTToken ,updatePost);
 router.post("/deletepost",CheckJWTToken, deletePost);
 
@@ -89,20 +89,17 @@ router.post("/deletepost",CheckJWTToken, deletePost);
 
 /**
  * @swagger
- * /post/getpostbyuserid:
+ * /post/getpostbyuserid/{userID}:
  *  get:
  *      tags: [Post]
  *      parameters:
- *              - in: body
- *                name: getpostbyuserid
+ *              - in: path
+ *                name: userID
  *                description: Get Post By User ID
  *                schema:
- *                  type: object
- *                  required:
- *                      - userID
- *                  properties:
- *                      userID:
- *                          type: string
+ *                  type: string
+ *                  required: true
+ *                  description: userID
  *      responses:
  *          200:
  *              description: Get Post By UserID
