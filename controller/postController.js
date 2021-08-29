@@ -29,10 +29,16 @@ exports.getPostByUserID = async (req, res) => {
   try {
     const { userID } = req.params;
 
-    const posts = await PostMessage.findOne({ userID }).sort({
+    const posts = await PostMessage.find({userID}).sort({
       createdDate: -1,
     });
-    res.status(200).json(posts);
+
+    if (posts === null) {
+      res.status(200).json({count_posts:"0" , message: "This userID does not have any post." });
+    } else {
+      res.status(200).json(posts);
+    }
+
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
