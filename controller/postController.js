@@ -24,6 +24,37 @@ exports.getPosts = async (req, res) => {
   }
 };
 
+//GetPostsWithPaging
+exports.GetPostsWithPaging = async (req, res) => {
+  try {
+    const { pageNumber, pageLimit } = req.params;
+
+    const pageOptions = {
+      page: parseInt(pageNumber) || 0,
+      limit: parseInt(pageLimit) || 10,
+    };
+
+    const postMessages = await PostMessage.aggregate([
+      {
+        $lookup: {
+          let: { userObjId: { $toObjectId: "$userID" } },
+          from: "users",
+          pipeline: [{ $match: { $expr: { $eq: ["$_id", "$$userObjId"] } } }],
+          as: "user_info",
+        },
+      },
+    ])
+      .sort({ createdDate: -1 })
+      .skip(pageOptions.page * pageOptions.limit)
+      .limit(pageOptions.limit);
+      
+      res.status(200).json(postMessages);
+      
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
 //Get Post By UserID
 exports.getPostByUserID = async (req, res) => {
   try {

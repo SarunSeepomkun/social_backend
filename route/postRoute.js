@@ -2,6 +2,7 @@ const express = require("express");
 const {
   getPostByUserID,
   getPosts,
+  GetPostsWithPaging,
   createPost,
   updatePost,
   likePost,
@@ -12,12 +13,12 @@ const { CheckJWTToken } = require("../controller/authController");
 const router = express.Router();
 
 router.get("/getposts", getPosts);
+router.get("/GetPostsWithPaging/:pageNumber/:pageLimit", GetPostsWithPaging);
 router.post("/createpost",CheckJWTToken, createPost);
 router.put("/likepost",CheckJWTToken ,likePost);
 router.get("/getpostbyuserid/:userID", getPostByUserID);
 router.put("/editpost",CheckJWTToken ,updatePost);
 router.post("/deletepost",CheckJWTToken, deletePost);
-
 
 /**
  * @swagger
@@ -36,6 +37,31 @@ router.post("/deletepost",CheckJWTToken, deletePost);
  *           description: Get all posts
  */
 
+
+/**
+ * @swagger
+ * /post/GetPostsWithPaging/{pageNumber}/{pageLimit}:
+ *  get:
+ *      tags: [Post]
+ *      parameters:
+ *              - in: path
+ *                name: pageNumber
+ *                description: Get Post By Pagination
+ *                schema:
+ *                  type: string
+ *                  required: true
+ *                  description: pageNumber
+ *              - in: path
+ *                name: pageLimit
+ *                description: Get Post By Pagination
+ *                schema:
+ *                  type: string
+ *                  required: true
+ *                  description: pageLimit
+ *      responses:
+ *          200:
+ *              description: Get Post By Pagination
+ */
 
 /**
  * @swagger
