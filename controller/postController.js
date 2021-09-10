@@ -44,12 +44,11 @@ exports.GetPostsWithPaging = async (req, res) => {
         },
       },
     ])
-      .sort({ createdDate: -1 })
-      .skip(pageOptions.page * pageOptions.limit)
+      .sort({_id:-1})
+      .skip(pageOptions.limit * (pageOptions.page - 1))
       .limit(pageOptions.limit);
-      
-      res.status(200).json(postMessages);
-      
+
+    res.status(200).json(postMessages);
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
