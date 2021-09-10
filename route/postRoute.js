@@ -3,6 +3,7 @@ const {
   getPostByUserID,
   getPosts,
   GetPostsWithPaging,
+  GetPostByPostID,
   createPost,
   updatePost,
   likePost,
@@ -14,6 +15,7 @@ const router = express.Router();
 
 router.get("/getposts", getPosts);
 router.get("/GetPostsWithPaging/:pageNumber/:pageLimit", GetPostsWithPaging);
+router.post("/GetPostByPostID",CheckJWTToken, GetPostByPostID);
 router.post("/createpost",CheckJWTToken, createPost);
 router.put("/likepost",CheckJWTToken ,likePost);
 router.get("/getpostbyuserid/:userID", getPostByUserID);
@@ -61,6 +63,27 @@ router.post("/deletepost",CheckJWTToken, deletePost);
  *      responses:
  *          200:
  *              description: Get Post By Pagination
+ */
+
+/**
+ * @swagger
+ * /post/GetPostByPostID:
+ *  post:
+ *      tags: [Post]
+ *      parameters:
+ *              - in: body
+ *                name: like
+ *                description: Get Pos tBy PostID
+ *                schema:
+ *                  type: object
+ *                  required:
+ *                      - postID
+ *                  properties:
+ *                      postID:
+ *                          type: string
+ *      responses:
+ *          200:
+ *              description: Get a post
  */
 
 /**

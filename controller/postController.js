@@ -44,9 +44,42 @@ exports.GetPostsWithPaging = async (req, res) => {
         },
       },
     ])
-      .sort({_id:-1})
+      .sort({ _id: -1 })
       .skip(pageOptions.limit * (pageOptions.page - 1))
       .limit(pageOptions.limit);
+
+    res.status(200).json(postMessages);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+//Get Post By Post ID
+exports.GetPostByPostID = async (req, res) => {
+  try {
+    const { postID } = req.body;
+
+    const postMessages = await PostMessage.aggregate([
+      {
+        $match: {
+          _id: mongoose.Types.ObjectId(postID),
+        },
+      },
+      {
+        $lookup: {
+          let: { userObjId: { $toObjectId: "$userID" } },
+          from: "users",
+          pipeline: [
+            {
+              $match: {
+                $expr: { $eq: ["$_id", "$$userObjId"] },
+              },
+            },
+          ],
+          as: "user_info",
+        },
+      },
+    ]);
 
     res.status(200).json(postMessages);
   } catch (error) {
@@ -92,8 +125,12 @@ exports.createPost = async (req, res) => {
       message,
     });
 
-    await newPostMessage.save();
-    res.status(201).json({ message: "Created" });
+    let return_postID = await newPostMessage.save(function (err, result) {
+      return_postID = result._id.toString();
+      res
+        .status(201)
+        .json({ message: "Created", return_postID: return_postID });
+    });
   } catch (error) {
     res.status(409).json({ message: error.message });
   }
