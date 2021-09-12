@@ -48,7 +48,7 @@ exports.signin = async (req, res) => {
 //SignUp
 exports.signup = async (req, res) => {
   try {
-    const { username, email, password, bio } = req.body;
+    const { username, email, password } = req.body;
 
     const existUsername = await UserModel.findOne({ username });
     const existemail = await UserModel.findOne({ email });
@@ -65,8 +65,7 @@ exports.signup = async (req, res) => {
     const result = await UserModel.create({
       username: username,
       password: hashPassword,
-      email: email,
-      bio: bio,
+      email: email
     });
     const token = jwt.sign(
       { username: result.username, id: result._id },
