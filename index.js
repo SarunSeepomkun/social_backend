@@ -30,13 +30,21 @@ const swaggerOptions = {
 };
 
 const swaggerDocs = swaggerJSDoc(swaggerOptions);
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
 //middleware
+
+app.use(
+  cors({
+    origin: "https://ipeach-social.herokuapp.com",
+  })
+);
+
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+
 app.use(express.json());
 app.use(helmet());
 app.use(morgan("common"));
-app.use(cors());
+
 app.use(fileUpload());
 
 app.use("/user", userRoute);
@@ -45,7 +53,12 @@ app.use("/post", postRoutes);
 //MongoDB Connection
 mongoose.connect(
   MONGODB,
-  { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true , useFindAndModify: true,},
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: true,
+  },
   () => {
     console.log(`MongoDB connected`);
   }
