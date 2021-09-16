@@ -35,7 +35,7 @@ const swaggerDocs = swaggerJSDoc(swaggerOptions);
 
 app.use(
   cors({
-    origin: "https://ipeach-social.herokuapp.com",
+    origin: ["https://ipeach-social.herokuapp.com","*"],
   })
 );
 
